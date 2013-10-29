@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "GuildView";
+    const string TITLE = "queryTitle";
+}
+
+<h2>GuildViewer</h2>
+<p>@Html.ActionLink("データ編集", "Index", "Guild")</p>
+@using (Html.BeginForm("Result", "GuildView", FormMethod.Get))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>クエリ</legend>
+        <div class="editor-label">
+            タイトル(空の場合、履歴を残しません。)
+        </div>
+        <div class="editor-field">
+            <input class="@TITLE text-box single-line" type="text" value="" />
+        </div>
+
+        <div class="editor-label">
+            SQL
+        </div>
+        <div class="editor-field">
+            <input id="query" class="text-box single-line" type="text" value="" name="query" style="width: 100%;" />
+        </div>
+        <p>
+            <input type="submit" value="View" onclick="save()" />
+        </p>
+    </fieldset>
+}
+<p>
+    your history
+    <input type="button" onclick="clearHistory()" value="ClearHisory" />
+</p>
+<ul id="history" onload="refleshHisoty"></ul>
+
+
+<h3>テーブル情報</h3>
+<pre>   
+テーブル名:Guilds
+    [Name]        NVARCHAR
+    [MemberCount] INT
+    [Team]        NVARCHAR
+</pre>
+<h3>サンプル</h3>
+<p>@Html.ActionLink("select * from Guilds", "result", new { query = "select * from Guilds" })</p>
+<p>@Html.ActionLink("select Team,sum(MemberCount) as legion from Guilds group by Team", "result", new { query = "select Team,sum(MemberCount) as legion from Guilds group by Team" })</p>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function save() {
+            var title = $(".@TITLE").val() == null ? "" : $(".@TITLE").val().trim();
+
+            if (title.length <= 0) {
+                return;
+            }
+
+            localStorage.setItem($(".@TITLE").val(), $("#query").val());
+        }
+        function clearHistory() {
+            localStorage.clear();
+            refleshHisoty();
+        }
+        function refleshHisoty() {
+            $("#history").empty();
+            for (var i in localStorage) {
+                //もっと単純なエスケープがないだろうか
+                $("#history").append("<li>" + "<a href=GuildView/Result/" + encodeURI(localStorage.getItem(i)) + ">" + $('<div/>').text(i).html() + "</li>");
+            }
+        }
+
+        $("#history").ready(refleshHisoty);
+    </script>
+}

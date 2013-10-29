@@ -1,0 +1,36 @@
+﻿@model Practice.Models.Guild
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Guild</legend>
+    
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.MemberCount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MemberCount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Team)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Team)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Name }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

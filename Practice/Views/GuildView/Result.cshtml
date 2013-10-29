@@ -1,0 +1,47 @@
+﻿@model Practice.Models.SearchResult
+
+@{
+    ViewBag.Title = "Result";
+    decimal num;
+}
+<style type="text/css">
+    .Bar {
+        background-color: #00ff21;
+    }
+
+    .BarContent {
+        position: relative;
+    }
+</style>
+<h2>Result</h2>
+<table style="width: auto">
+    <tr>
+        @foreach (var item in Model.Result)
+        {
+            <th>
+                @item.Item1
+            </th>
+        }
+    </tr>
+    @for (int i = 0; i < Model.Result.First().Item2.Count; i++)
+    {
+        <tr>
+            @for (int j = 0; j < Model.Result.Count; j++)
+            {
+                <td>
+                    @if (Model.SumDic.TryGetValue(j, out num))
+                        
+                    { <div class="Bar" style="width:@(((decimal.Parse(Model.Result[j].Item2[i].ToString()) / num) * 100).ToString("#0.##") )%;">
+                        <div class="BarContent">@Model.Result[j].Item2[i]</div>
+                    </div>
+                    } else {
+                        @Model.Result[j].Item2[i]
+                    }
+                </td>
+            }
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Index", "Index")
+</p>
